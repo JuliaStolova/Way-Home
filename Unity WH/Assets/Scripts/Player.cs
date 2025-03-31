@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Vector3 position;
+    public Vector3 rotation;
+    // Method to save player data
+    public void SavePlayer()
     {
-        
+        SaveSystem.SavePlayer(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    // Method to load player data
+    public void LoadPlayer()
     {
-        
+        PlayerData data = SaveSystem.LoadPLayer();
+        if (data != null)
+        {
+            position = new Vector3(data.position[0], data.position[1], data.position[2]);
+            rotation = new Vector3(data.rotation[0], data.rotation[1], data.rotation[2]);
+            transform.position = position;
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+        else
+        {
+            Debug.LogError("No player data found to load.");
+        }
     }
 }
